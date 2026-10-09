@@ -12,6 +12,20 @@
  */
 export const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true';
 
+/**
+ * نوع الخلفية (Backend) في الوضع التجريبي:
+ *  - 'mock'     : بيانات وهمية في ذاكرة المتصفح — دون أي قاعدة بيانات أو Supabase.
+ *  - 'supabase' : عميل Supabase الحقيقي (للإنتاج أو ديمو سحابي).
+ * يُضبط عبر VITE_DEMO_BACKEND في .env.
+ *
+ * السلوك الافتراضي الآمن: يُفعَّل الوضع الوهمي صراحةً عبر 'mock'، أو تلقائيًا
+ * عند غياب رابط Supabase (VITE_SUPABASE_URL) — حتى يعمل الموقع فور استنساخه
+ * (clone ثم npm run dev) دون أي إعداد. وجود رابط حقيقي يعني استخدام Supabase
+ * ما لم تُطلب 'mock' صراحةً.
+ */
+export const MOCK_BACKEND =
+  import.meta.env.VITE_DEMO_BACKEND === 'mock' || !import.meta.env.VITE_SUPABASE_URL;
+
 /** بريد حساب العرض المستخدم للدخول التلقائي في الوضع التجريبي. */
 export const DEMO_EMAIL = import.meta.env.VITE_DEMO_EMAIL ?? 'admin@demo.local';
 
