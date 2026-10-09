@@ -371,7 +371,7 @@ function SettingsContent() {
                     <BookOpen className="h-5 w-5 text-primary" />
                     المواضيع
                   </CardTitle>
-                  <CardDescription>إدارة المواضيع والمواد الدراسية</CardDescription>
+                  <CardDescription>إدارة المواضيع التعليمية والتربوية</CardDescription>
                 </div>
                 {isAdmin && (
                   <Button
@@ -569,7 +569,7 @@ function SettingsContent() {
               {editingTopic ? 'تعديل الموضوع' : 'إضافة موضوع جديد'}
             </DialogTitle>
             <DialogDescription>
-              أدخل بيانات الموضوع أو المادة الدراسية
+              أدخل بيانات الموضوع التعليمي
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
