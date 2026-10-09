@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Islamic Green & Gold Design System */
+
+@layer base {
+  :root {
+    /* الأخضر الإسلامي كلون أساسي */
+    --background: 60 20% 98%;
+    --foreground: 150 30% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 150 30% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 30% 15%;
+
+    /* الأخضر الإسلامي الداكن */
+    --primary: 130 60% 25%;
+    --primary-foreground: 60 20% 98%;
+
+    /* الذهبي */
+    --secondary: 43 65% 55%;
+    --secondary-foreground: 150 30% 15%;
+
+    --muted: 60 10% 93%;
+    --muted-foreground: 150 15% 45%;
+
+    /* الذهبي الفاتح للتمييز */
+    --accent: 43 50% 85%;
+    --accent-foreground: 150 30% 15%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 60 20% 98%;
+
+    --border: 60 15% 85%;
+    --input: 60 15% 85%;
+    --ring: 130 60% 35%;
+
+    --radius: 0.5rem;
+
+    /* الشريط الجانبي */
+    --sidebar-background: 130 60% 20%;
+    --sidebar-foreground: 60 20% 95%;
+    --sidebar-primary: 43 65% 55%;
+    --sidebar-primary-foreground: 150 30% 15%;
+    --sidebar-accent: 130 50% 30%;
+    --sidebar-accent-foreground: 60 20% 95%;
+    --sidebar-border: 130 40% 30%;
+    --sidebar-ring: 43 65% 55%;
+
+    /* ألوان إضافية */
+    --success: 142 76% 36%;
+    --success-foreground: 60 20% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 150 30% 15%;
+    --info: 199 89% 48%;
+    --info-foreground: 60 20% 98%;
+  }
+
+  .dark {
+    --background: 150 30% 8%;
+    --foreground: 60 20% 95%;
+
+    --card: 150 25% 12%;
+    --card-foreground: 60 20% 95%;
+
+    --popover: 150 25% 12%;
+    --popover-foreground: 60 20% 95%;
+
+    --primary: 130 55% 45%;
+    --primary-foreground: 150 30% 8%;
+
+    --secondary: 43 60% 50%;
+    --secondary-foreground: 150 30% 8%;
+
+    --muted: 150 20% 18%;
+    --muted-foreground: 60 10% 65%;
+
+    --accent: 43 40% 25%;
+    --accent-foreground: 60 20% 95%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 60 20% 98%;
+
+    --border: 150 20% 20%;
+    --input: 150 20% 20%;
+    --ring: 130 55% 45%;
+
+    --sidebar-background: 150 30% 6%;
+    --sidebar-foreground: 60 20% 95%;
+    --sidebar-primary: 43 60% 50%;
+    --sidebar-primary-foreground: 150 30% 8%;
+    --sidebar-accent: 150 25% 15%;
+    --sidebar-accent-foreground: 60 20% 95%;
+    --sidebar-border: 150 20% 15%;
+    --sidebar-ring: 43 60% 50%;
+
+    --success: 142 70% 45%;
+    --success-foreground: 150 30% 8%;
+    --warning: 38 90% 55%;
+    --warning-foreground: 150 30% 8%;
+    --info: 199 85% 55%;
+    --info-foreground: 150 30% 8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    direction: rtl;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* تصحيح اتجاه بعض العناصر */
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"] {
+    direction: ltr;
+    text-align: right;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* أنماط إسلامية */
+  .islamic-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L30 60M0 30L60 30M0 0L60 60M60 0L0 60' stroke='%231B5E20' stroke-width='0.5' fill='none' opacity='0.1'/%3E%3C/svg%3E");
+  }
+
+  .gold-gradient {
+    background: linear-gradient(135deg, hsl(43 65% 55%) 0%, hsl(43 70% 45%) 100%);
+  }
+
+  .green-gradient {
+    background: linear-gradient(135deg, hsl(130 60% 25%) 0%, hsl(130 60% 35%) 100%);
+  }
+}
