@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { DEMO_MODE, DEMO_EMAIL, DEMO_PASSWORD } from '@/lib/demo';
 
 interface UserProfile {
   id: string;
@@ -117,11 +118,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
-    // Then check current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Then check current session (with demo auto-login fallback)
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      // وضع النسخة التجريبية: إن لم توجد جلسة، سجّل الدخول تلقائيًا
+      // بحساب العرض دون الحاجة لصفحة تسجيل الدخول. سيتكفّل onAuthStateChange
+      // بضبط الحالة وجلب البيانات عند نجاح الدخول.
+      if (!session && DEMO_MODE) {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: DEMO_EMAIL,
+          password: DEMO_PASSWORD,
+        });
+        if (error) {
+          console.error('Demo auto-login failed:', error.message);
+          setIsLoading(false); // احتياط: ستظهر شاشة الدخول التجريبية
+        }
+        return;
+      }
+
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
         fetchUserData(session.user.id);
       }

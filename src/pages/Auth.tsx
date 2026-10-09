@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { DEMO_MODE, DEMO_EMAIL, DEMO_PASSWORD } from '@/lib/demo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, BookOpen, Users, Star, Eye, EyeOff } from 'lucide-react';
+import { Loader2, BookOpen, Users, Star, Eye, EyeOff, PlayCircle } from 'lucide-react';
 
 export default function Auth() {
   const [mode, setMode] = useState<'login' | 'register' | 'forgot'>('login');
@@ -16,9 +17,23 @@ export default function Auth() {
   const [fullName, setFullName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, user, isLoading: authLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  const handleDemoLogin = async () => {
+    setIsLoading(true);
+    const { error } = await signIn(DEMO_EMAIL, DEMO_PASSWORD);
+    if (error) {
+      toast({
+        title: 'تعذّر الدخول إلى النسخة التجريبية',
+        description: 'لم يُنشأ حساب الديمو بعد. راجع DEMO_SETUP.md §4.3 لإنشائه وترقيته إلى مدير.',
+        variant: 'destructive',
+      });
+      setIsLoading(false);
+    }
+    // عند النجاح: onAuthStateChange يضبط الجلسة ثم يُعاد التوجيه تلقائيًا للوحة التحكم
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,6 +99,48 @@ export default function Auth() {
     if (mode === 'login') return 'أدخل بياناتك للوصول إلى لوحة التحكم';
     return 'أنشئ حسابك للانضمام إلى فريق العمل';
   };
+
+  // ── وضع النسخة التجريبية: لا صفحة دخول/إنشاء حساب ──
+  // الدخول التلقائي يتم من AuthContext عند فتح التطبيق؛ هذه الشاشة
+  // تظهر فقط كاحتياط (بعد تسجيل الخروج مثلاً) للدخول بنقرة واحدة.
+  if (DEMO_MODE) {
+    if (user) {
+      return <Navigate to="/" replace />;
+    }
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 green-gradient" dir="rtl">
+        <Card className="w-full max-w-md border-border/50 shadow-lg">
+          <CardHeader className="text-center space-y-3 pb-4">
+            <div className="mx-auto h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+              <BookOpen className="h-8 w-8 text-primary" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl">النسخة التجريبية</CardTitle>
+              <CardDescription className="mt-2 text-sm">
+                جرّب منظومة العمل الجمعوي فورًا — دون تسجيل دخول. البيانات الظاهرة وهمية بالكامل.
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="px-6 space-y-4">
+            <Button
+              onClick={handleDemoLogin}
+              className="w-full h-12 text-base font-medium"
+              disabled={isLoading || authLoading}
+            >
+              {isLoading || authLoading ? (
+                <><Loader2 className="ml-2 h-5 w-5 animate-spin" />جارٍ الدخول إلى النسخة التجريبية...</>
+              ) : (
+                <><PlayCircle className="ml-2 h-5 w-5" />ابدأ التجربة الآن</>
+              )}
+            </Button>
+            <p className="text-xs text-center text-muted-foreground">
+              تدخل كـ «مدير» للاطّلاع على كامل الميزات.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
