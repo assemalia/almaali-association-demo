@@ -65,20 +65,6 @@ npm run dev              # http://localhost:8080 — دخول تلقائي كم�
 
 ---
 
-## 🖼️ لقطات الشاشة
-
-> أضف لقطاتك في مجلد `docs/screenshots/` بأسماء مثل `dashboard.png` ثم فعّل الصور أدناه (أزل تعليق HTML).
-
-<!--
-![لوحة التحكم](./docs/screenshots/dashboard.png)
-![الأعضاء](./docs/screenshots/members.png)
-![الحضور](./docs/screenshots/attendance.png)
-![الاشتراكات](./docs/screenshots/subscriptions.png)
--->
-_(ستُضاف قريبًا)_
-
----
-
 ## 🧱 المكدّس التقني
 
 | الجانب | التقنية |
