@@ -21,28 +21,52 @@
 
 ---
 
-## 🚀 تجربة سريعة (نسخة تجريبية محلية)
+## 🚀 تجربة سريعة
 
-النسخة التجريبية تعمل على قاعدة بيانات **Supabase محلية** مملوءة ببيانات افتراضية (أفواج، أعضاء، لقاءات، اشتراكات...).
+لديك طريقان — **بدون Docker (سحابي، الأسهل)** أو **محلي بـ Docker**:
+
+### ⚡ الطريق (أ): بدون Docker — عبر Supabase سحابي مجاني (موصى به)
 
 ```bash
-# 1) المتطلبات: Node.js 18+ و Docker Desktop و Supabase CLI
+# 1) أنشئ مشروعًا مجانيًا على https://supabase.com  (بالمتصفح، دون Docker)
+# 2) ثبّت الأدوات
 npm install -g supabase
-
-# 2) تثبيت الحزم
 npm install
 
-# 3) تشغيل قاعدة البيانات المحلية + تطبيق المخطط والبيانات التجريبية
-supabase start
-supabase db reset        # يطبّق migrations ثم supabase/seed.sql
+# 3) اربط المشروع وادفع المخطط (db push لا يحتاج Docker)
+supabase login
+supabase link --project-ref <YOUR_PROJECT_REF>
+supabase db push                       # يطبّق كل migrations على المشروع السحابي
 
-# 4) إعداد متغيّرات البيئة
-cp .env.example .env
-#   ثم ضع في .env قيمتَي  API URL  و  anon key  الظاهرتين بعد "supabase start"
+# 4) طبّق البيانات التجريبية:
+#    Dashboard → SQL Editor → الصق محتوى supabase/seed.sql ثم Run
 
-# 5) تشغيل التطبيق
-npm run dev              # http://localhost:8080
+# 5) أنشئ مستخدم الديمو ورقِّه إلى مدير (انظر القسم التالي "👤 إنشاء المدير")
+
+# 6) إعداد البيئة ثم التشغيل
+cp .env.example .env                    # ضع Project URL و anon key من Dashboard → Settings → API
+npm run dev                             # http://localhost:8080
 ```
+
+### 🐳 الطريق (ب): محلي بـ Docker
+
+```bash
+npm install -g supabase
+npm install
+supabase start                          # يشغّل القاعدة محليًا (يتطلب Docker Desktop)
+supabase db reset                       # يطبّق migrations ثم supabase/seed.sql تلقائيًا
+cp .env.example .env                     # ضع API URL و anon key الظاهرين بعد "supabase start"
+npm run dev                             # http://localhost:8080
+```
+
+### 👤 إنشاء المدير (مطلوب للدخول التلقائي)
+
+1. **أنشئ المستخدم:** في Supabase → **Authentication → Add user**
+   - البريد: `admin@demo.local` — كلمة المرور: `Demo12345` — فعّل **Auto Confirm User**.
+   - (محليًا افتح Studio على http://127.0.0.1:54323)
+2. **رقِّه إلى مدير:** في **SQL Editor** الصق محتوى [`supabase/demo_admin.sql`](./supabase/demo_admin.sql) ثم **Run**.
+   - هذا يضبط `is_approved = true` ويمنحه دور `admin` (المستخدم الجديد يُنشأ افتراضيًا "بانتظار الموافقة" وبدور `educator` فقط).
+3. أعد تحميل التطبيق — سيدخل تلقائيًا إلى لوحة التحكم كمدير.
 
 ### 🪄 دخول تلقائي — دون تسجيل دخول
 

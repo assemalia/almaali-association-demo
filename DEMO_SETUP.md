@@ -232,7 +232,8 @@ curl -X POST 'http://127.0.0.1:54321/auth/v1/signup' \
   -d '{"email":"admin@demo.local","password":"Demo12345"}'
 ```
 
-ثم **وافق عليه وامنحه دور المدير** عبر SQL (من Studio ← SQL Editor، أو `supabase db ...`):
+ثم **وافق عليه وامنحه دور المدير** عبر SQL. أسهل طريقة: الصق محتوى الملف الجاهز
+[`supabase/demo_admin.sql`](./supabase/demo_admin.sql) في SQL Editor ثم Run. أو نفّذ يدويًا:
 
 ```sql
 -- الموافقة على المستخدم
